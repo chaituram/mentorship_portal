@@ -1,0 +1,21 @@
+.cursor {
+    cursor: pointer;
+}
+
+.table .thead-dark th {
+    color: #343a40;
+    background-color: white;
+    border-color: 1px solid #dee2e6;;
+}
+
+.table th, .table td{
+    background: white;
+}
+
+td, a {
+    color: #343a40!important;
+}
+
+a:hover {
+    
+}
