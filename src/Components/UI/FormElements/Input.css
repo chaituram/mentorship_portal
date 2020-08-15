@@ -6,3 +6,8 @@
 .form-group > input {
     width: 100%!important;
 }
+
+.inValid {
+    border-color: #dc3545!important;
+    background: #ffc8c8;
+}

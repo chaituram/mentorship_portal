@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import firebase from "../../Services/FireBase";
 
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/Hoc";
 import Users from "../../Components/Users/Users";
 import Header from "../../Components/Header/Header";
 // let resUsers = [];

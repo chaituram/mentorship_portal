@@ -8,7 +8,7 @@ const users = (props) => {
     console.log(props, 'usersData');
     const eachUser = props.usersData.map(user =>
         <tr key={user.id}>
-            <td><Link to="/portal">{user.firstname}</Link></td>
+            <td><Link to="/portal"><b>{user.firstname}</b></Link></td>
             <td>{user.lastname}</td>
             <td>{user.email}</td>
         </tr>

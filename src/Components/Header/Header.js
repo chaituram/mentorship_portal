@@ -22,7 +22,13 @@ class Header extends Component {
           placeholder: 'User Name',
         },
         value: '',
-        label: 'User Name'
+        label: 'User Name',
+        validation: {
+          required: true,
+          minLength: 3
+        },
+        valid: false,
+        touched: false
       },
       lastname: {
         inputElementType: 'input',
@@ -31,7 +37,13 @@ class Header extends Component {
           placeholder: 'Last Name',
         },
         value: '',
-        label: 'Last Name'
+        label: 'Last Name',
+        validation: {
+          required: true,
+          minLength: 3,
+        },
+        valid: false,
+        touched: false
       },
       email: {
         inputElementType: 'email',
@@ -40,7 +52,14 @@ class Header extends Component {
           placeholder: 'E-Mail',
         },
         value: '',
-        label: 'E-Mail'
+        label: 'E-Mail',
+        validation: {
+          required: true,
+          minLength: 4,
+          custom: true
+        },
+        valid: false,
+        touched: false
       },
       mobile: {
         inputElementType: 'number',
@@ -49,16 +68,41 @@ class Header extends Component {
           placeholder: 'Phone Number',
         },
         value: '',
-        label: 'Phone Number'
-      },
-    }
+        label: 'Phone Number',
+        validation: {
+          required: true,
+          minLength: 10,
+          maxLength: 10
+        },
+        valid: false,
+        touched: false
+      }
+    },
+    formValidation: false
 
   }
 
   createUserHandler = (e) => {
     e.preventDefault();
-    console.log('was clicked !');
     this.setState({ isModalOpen: true });
+  }
+
+  checkValidity(value, rules) {
+    let isValid = false;
+    // debugger;
+    if (rules.required) {
+      isValid = value.trim() != '';
+    }
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength;
+    }
+    if (rules.maxLength) {
+      isValid = value.length === rules.minLength;
+    }
+    if (rules.custom) {
+      isValid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)
+    }
+    return isValid;
   }
 
   inputChangedHandler = (event, inputIdentifier) => {
@@ -66,12 +110,19 @@ class Header extends Component {
       ...this.state.userForm
     }
     const updatedUserFormValue = {
-      ...updatedUserForm[inputIdentifier] = event.target.value
+      ...updatedUserForm[inputIdentifier]
     }
     updatedUserFormValue.value = event.target.value;
+    // debugger
+    updatedUserFormValue.valid = this.checkValidity(updatedUserFormValue.value, updatedUserFormValue.validation);
+    updatedUserFormValue.touched = true;
     updatedUserForm[inputIdentifier] = updatedUserFormValue;
-    this.setState({ userForm: updatedUserForm });
-    console.log(updatedUserForm, 'updatedUserForm');
+    let isFormValidated = true;
+    for (let inputIdentifier in updatedUserForm) {
+      isFormValidated = updatedUserForm[inputIdentifier].valid && isFormValidated;
+    }
+    this.setState({ userForm: updatedUserForm, formValidation: isFormValidated });
+    // console.log(updatedUserForm, 'updatedUserForm');
   }
 
   submitHandler = (event) => {
@@ -136,7 +187,9 @@ class Header extends Component {
                         value={form.config.value}
                         inputtype={form.config.inputElementType}
                         id={form.id}
-                        changed={(event)=> {this.inputChangedHandler(event, form.id)}}
+                        changed={(event) => { this.inputChangedHandler(event, form.id) }}
+                        inputValidated={form.config.valid}
+                        inputTouched={form.config.touched}
                       />
                     )}
                   </form>
@@ -144,7 +197,7 @@ class Header extends Component {
                 {/* <hr /> */}
                 <div className="modal-footer pb-0">
                   <button className="btn btn-danger" onClick={this.closeModalHandler}>Cancel</button>
-                  <button className="btn btn-success" onClick={this.submitHandler}>Save</button>
+                  <button className="btn btn-success" disabled={!this.state.formValidation} onClick={this.submitHandler}>Save</button>
                 </div>
 
 
