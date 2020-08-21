@@ -1,37 +1,71 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from "react";
+import { Route, Link } from "react-router-dom";
 
+import firebase from "../../Services/FireBase";
+
+import UserDetails from "../../Containers/UserDetails/UserDetails";
 import User from "./User/User";
 import "./Users.css";
 // let eachUser = null;
-const users = (props) => {
-    console.log(props, 'usersData');
-    const eachUser = props.usersData.map(user =>
-        <tr key={user.id}>
-            <td><Link to="/portal"><b>{user.firstname}</b></Link></td>
-            <td>{user.lastname}</td>
-            <td>{user.email}</td>
-        </tr>
-    )
+class Users extends Component {
+    state = {
+        data: []
+    };
+    getAllUsers() {
+        let items = [];
+        let userId = [];
+        firebase.db.collection("users").get()
+            .then((snapshot) => {
+                snapshot.docs.forEach((doc, index) => {
+                    let record = doc.data();
+                    record['id'] = doc.id;
+                    items.push(record);
+                    // userId.push(doc.id);
+                    this.setState({ data: items });
+                });
+                console.log(this.state.data, 'userId');
+            })
+    }
 
-    return (
-        <div>
-            <table className="table">
-                <thead >
-                    <tr>
-                        {/* <th scope="col">#</th> */}
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {eachUser}
-                </tbody>
-            </table>
+    componentDidMount() {
+        this.getAllUsers()
+    }
+    getAllUsersListHandler() {
+        console.log('user created !');
+    }
+    // userSelectedHandler= (id) => {
+    //     this.setState({id: id})
+    // }
 
-        </div>
-    )
+
+    render() {
+        const eachUser = this.state.data.map(user =>
+            <User
+                key={user.id}
+                id={user.id}
+                fname={user.firstname}
+                lname={user.lastname}
+                email={user.email}
+                // clicked={() => userSelectedHandler(user.id)}
+            />
+        )
+        return(
+            <div>
+                <table className="table">
+                    <thead >
+                        <tr>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {eachUser}
+                    </tbody>
+                </table>
+            </div>
+        )
+    }
 };
 
-export default users;
+export default Users;

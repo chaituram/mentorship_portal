@@ -4,6 +4,7 @@ import "./App.css";
 
 import Dashboard from "./Containers/Dashboard/Dashboard";
 import Portal from "./Containers/Portal/Portal";
+import UserDetails from "./Containers/UserDetails/UserDetails";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Switch>
         <Route path="/" exact component={Dashboard} />
         <Route path="/portal" exact component={Portal} />
+        <Route path="/user-details/:id" exact component={UserDetails} />
       </Switch>
     </div>
   );
