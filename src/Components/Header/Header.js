@@ -130,10 +130,10 @@ class Header extends Component {
     const user = {};
     for (let inputElementIdentifier in this.state.userForm) {
       user[inputElementIdentifier] = this.state.userForm[inputElementIdentifier].value;
-      console.log(user, 'user');
+      // console.log(user, 'user');
     }
     this.setState({ isModalOpen: false });
-    console.log(user, 'savingUser');
+    // console.log(user, 'savingUser');
     firebase.db.collection('users').add(user);
   }
   modalHandler = (e) => {
@@ -168,6 +168,7 @@ class Header extends Component {
             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
             <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.createUserHandler}>Create user</button>
             <Modal
+            classes={'Modal-sm'}
               show={this.state.isModalOpen}
               modalClosed={this.modalHandler}
             >

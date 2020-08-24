@@ -41,6 +41,16 @@ const input = (props) => {
                 onChange={props.changed}
             />
             break;
+        case ('select'):
+            inputElement = <select className={inputClasses.join(' ')}
+                key={props.id}
+                {...props.elementConfig}
+                {...props.value}
+                onChange={props.changed}
+            >
+                <option></option>
+            </select>
+            break;
         default:
             inputElement = <input className={inputClasses.join(' ')}
                 key={props.id}

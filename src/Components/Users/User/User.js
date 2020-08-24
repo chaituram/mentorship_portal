@@ -3,7 +3,7 @@ import { Route, Link } from "react-router-dom";
 
 
 const user = (props) => {
-  console.log(props, 'user details');
+  // console.log(props, 'user details');
   return (
     <tr>
       <td><Link

@@ -3,7 +3,6 @@ import { Route, Link } from "react-router-dom";
 
 import firebase from "../../Services/FireBase";
 
-import UserDetails from "../../Containers/UserDetails/UserDetails";
 import User from "./User/User";
 import "./Users.css";
 // let eachUser = null;
@@ -23,7 +22,7 @@ class Users extends Component {
                     // userId.push(doc.id);
                     this.setState({ data: items });
                 });
-                console.log(this.state.data, 'userId');
+                // console.log(this.state.data, 'userId');
             })
     }
 
@@ -31,11 +30,8 @@ class Users extends Component {
         this.getAllUsers()
     }
     getAllUsersListHandler() {
-        console.log('user created !');
+        // console.log('user created !');
     }
-    // userSelectedHandler= (id) => {
-    //     this.setState({id: id})
-    // }
 
 
     render() {
@@ -46,7 +42,6 @@ class Users extends Component {
                 fname={user.firstname}
                 lname={user.lastname}
                 email={user.email}
-                // clicked={() => userSelectedHandler(user.id)}
             />
         )
         return(

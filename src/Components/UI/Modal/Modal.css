@@ -2,7 +2,7 @@
     position: fixed;
     z-index: 500;
     background-color: white;
-    width: 70%;
+    /* width: 70%; */
     border: 1px solid #ccc;
     /* box-shadow: 1px 1px 1px black; */
     padding: 16px;
@@ -13,11 +13,21 @@
     border-radius: 4px;
 }
 
-@media (min-width: 600px) {
+/* @media (min-width: 600px) {
     .Modal {
         width: 500px;
         left: calc(50% - 250px);
     }
+} */
+
+.Modal-sm {
+    width: 500px;
+    left: calc(50% - 250px);
+}
+
+.Modal-lg {
+    width: 56%;
+    left: 25%;
 }
 
 
