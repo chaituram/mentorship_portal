@@ -6,13 +6,13 @@ import PortalContainer from '../Portal/PortalContainer/PortalContainer'
 
 class Portal extends Component {
     componentDidMount() {
-        console.log(this.props);
+        console.log(this.props, 'mentorshipId');
     }
     render() {
         return (
             <div className="d-flex flex-row">
                 <Navigation />
-                <PortalContainer />
+                <PortalContainer mentorshipId={this.props.match.params.id} />
             </div>
         )
     }

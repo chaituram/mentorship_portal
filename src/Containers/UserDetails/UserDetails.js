@@ -38,6 +38,7 @@ class UserDetails extends Component {
                 querySnapshot.forEach((doc) => {
                     // console.log(doc.data());
                     let record = doc.data();
+                    record['id'] = doc.id;
                     mentorshipPrograms.push(record);
                     this.setState({ mentorships: mentorshipPrograms });
                     // console.log(mentorshipPrograms);

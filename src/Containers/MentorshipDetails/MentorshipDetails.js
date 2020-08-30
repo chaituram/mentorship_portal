@@ -31,7 +31,9 @@ class MentorshipDetails extends Component {
 
     saveMentorshipDetailsHandler = (event) => {
         event.preventDefault();
-        firebase.db.collection('mentorship').add(this.state.mentorship)
+        firebase.db.collection('mentorship').add(this.state.mentorship);
+        console.log(this.props);
+        // this.props.history.push("/portal/" + this.props.id);
     }
 
     selectMentorHandler = (event) => {
@@ -55,39 +57,42 @@ class MentorshipDetails extends Component {
     }
 
     render() {
-        console.log(this.props);
+        // console.log(this.props);
         let dataToDisplay;
         if (this.props.mentorshipPrograms.length > 0) {
-            dataToDisplay = (
-                <div>
-                    {/* <p>Data available</p> */}
-                Mentor:  <select className="mb-3" disabled onChange={this.selectMentorHandler} value={this.props.mentorshipPrograms[0].mentor_id}>
-                        <option value="null">---select---</option>
-                        {
-                            this.props.completeUsers &&
-                            this.props.completeUsers.map((h, i) =>
-                                (<option key={i} value={h.id}>{h.firstname}</option>))
-                        }
-                    </select>
-                    <p>
-                        Goal: {this.props.mentorshipPrograms[0].goal}
-                    </p>
-                    <p>
-                        Status: {this.props.mentorshipPrograms[0].status}
-                    </p>
-                    <p>
-                        Start date: {this.props.mentorshipPrograms[0].startDate.toDate().toString()}
-                    </p>
+            this.props.mentorshipPrograms.map((program) => {
+                dataToDisplay = (
                     <div>
-                        <Link
-                            to={{
-                                pathname: "/portal/" + this.props.id
-                            }}>
-                            <button className="btn btn-primary">Go to Board</button>
-                        </Link>
+                        {/* <p>Data available</p> */}
+                    Mentor:  <select className="mb-3" disabled onChange={this.selectMentorHandler} value={program.mentor_id}>
+                            <option value="null">---select---</option>
+                            {
+                                this.props.completeUsers &&
+                                this.props.completeUsers.map((h, i) =>
+                                    (<option key={i} value={h.id}>{h.firstname}</option>))
+                            }
+                        </select>
+                        <p>
+                            Goal: {program.goal}
+                        </p>
+                        <p>
+                            Status: {program.status}
+                        </p>
+                        <p>
+                            Start date: {program.startDate.toDate().toString()}
+                        </p>
+                        <div>
+                            <Link
+                                to={{
+                                    pathname: "/portal/" + program.id
+                                }}>
+                                <button className="btn btn-primary">Go to Board</button>
+                            </Link>
+                        </div>
                     </div>
-                </div>
-            )
+                )
+            })
+
         } else {
 
             dataToDisplay = (
@@ -96,8 +101,8 @@ class MentorshipDetails extends Component {
                     <div className="form-group row">
                         <label className="col-sm-2 col-form-label">Assign a mentor</label>
                         <div className="col-sm-10">
-                            <select 
-                            onChange={this.selectMentorHandler}>
+                            <select
+                                onChange={this.selectMentorHandler}>
                                 <option value="null">---select---</option>
                                 {
                                     this.props.completeUsers &&
@@ -113,15 +118,10 @@ class MentorshipDetails extends Component {
                         <textarea onChange={this.textAreaHandler}></textarea>
                     </div>
                     <div>
-                        <Link
-                            to={{
-                                pathname: "/portal/" + this.props.id
-                            }}>
-                            <button
-                                disabled={this.state.saveButtonStatus}
-                                className="btn btn-primary"
-                                onClick={this.saveMentorshipDetailsHandler}
-                            >Save</button>
+                        <Link to={{
+                            pathname: "/portal/" + this.props.id
+                        }}>
+                            <button className="btn btn-primary" onClick={this.saveMentorshipDetailsHandler}>Save</button>
                         </Link>
 
                     </div>

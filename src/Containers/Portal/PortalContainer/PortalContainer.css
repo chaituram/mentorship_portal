@@ -2,3 +2,25 @@
     width: 100%!important;
     background-color: #f8f9fc;
 }
+
+.TasksContainer{
+    /* border-top: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc; */
+    /* background-color: #cccccc; */
+    border-radius: 2px;
+    margin: 0% 1%;
+}
+
+.TaskTitle {
+    min-width: 60%;
+    max-width: 100%;
+    border: 1px solid #cccccc;
+}
+
+.TaskDetails {
+    max-width: 40%;
+    min-width: 40%;
+    height: 80vh;
+    overflow-y: scroll;
+}

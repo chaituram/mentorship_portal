@@ -52,6 +52,7 @@ class Users extends Component {
                             <th scope="col">First</th>
                             <th scope="col">Last</th>
                             <th scope="col">Email</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>

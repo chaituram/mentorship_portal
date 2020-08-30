@@ -1,0 +1,19 @@
+/* .Task {
+    border-bottom: 1px solid #cccccc;
+    color: black;
+    text-align: left;
+    cursor: pointer;
+} */
+
+.Tasks {
+    padding: 10px 2px 2px 10px;
+    /* border-bottom: 1px solid #cccccc; */
+    color: black;
+    text-align: left;
+    cursor: pointer;
+
+}
+a {
+    text-align: left!important;
+    width: 100%;
+}

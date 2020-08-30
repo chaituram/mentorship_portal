@@ -158,54 +158,59 @@ class Header extends Component {
     return (
       <div className="mb-7">
         <nav className="navbar navbar-light justify-content-between">
-          <a className="navbar-brand">
-            <div className="title">
-              <span className="title-1">MENTORSHIP</span>
+          <div>
+            <a className="navbar-brand">
+              <div className="title">
+                <span className="title-1">MENTORSHIP</span>
          &nbsp; <em>PORTAL</em>
-            </div>
-          </a>
-          <form className="form-inline">
-            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-            <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.createUserHandler}>Create user</button>
-            <Modal
-            classes={'Modal-sm'}
-              show={this.state.isModalOpen}
-              modalClosed={this.modalHandler}
-            >
-              <div
-                style={{ color: 'black' }}
-              >
-                <div className="modal-title">
-                  <h4>{modalTitle}</h4>
-                </div>
-                <hr />
-                <div className="modal-body pt-0">
-                  <form>
-                    {formElementsArray.map(form =>
-                      <Input
-                        elementConfig={form.config.elementConfig}
-                        label={form.config.label}
-                        value={form.config.value}
-                        inputtype={form.config.inputElementType}
-                        id={form.id}
-                        changed={(event) => { this.inputChangedHandler(event, form.id) }}
-                        inputValidated={form.config.valid}
-                        inputTouched={form.config.touched}
-                      />
-                    )}
-                  </form>
-                </div>
-                {/* <hr /> */}
-                <div className="modal-footer pb-0">
-                  <button className="btn btn-danger" onClick={this.closeModalHandler}>Cancel</button>
-                  <button className="btn btn-success" disabled={!this.state.formValidation} onClick={this.submitHandler}>Save</button>
-                </div>
-
-
               </div>
-            </Modal>
-          </form>
+            </a>
+          </div>
+          <div>
+            <form className="form-inline">
+              <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+              <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.createUserHandler}>Create user</button>
+            </form>
+          </div>
+
         </nav>
+        <Modal
+          classes={'Modal-sm'}
+          show={this.state.isModalOpen}
+          modalClosed={this.modalHandler}
+        >
+          <div
+            style={{ color: 'black' }}
+          >
+            <div className="modal-title">
+              <h4>{modalTitle}</h4>
+            </div>
+            <hr />
+            <div className="modal-body pt-0">
+              <form>
+                {formElementsArray.map(form =>
+                  <Input
+                    elementConfig={form.config.elementConfig}
+                    label={form.config.label}
+                    value={form.config.value}
+                    inputtype={form.config.inputElementType}
+                    id={form.id}
+                    changed={(event) => { this.inputChangedHandler(event, form.id) }}
+                    inputValidated={form.config.valid}
+                    inputTouched={form.config.touched}
+                  />
+                )}
+              </form>
+            </div>
+            {/* <hr /> */}
+            <div className="modal-footer pb-0">
+              <button className="btn btn-danger" onClick={this.closeModalHandler}>Cancel</button>
+              <button className="btn btn-success" disabled={!this.state.formValidation} onClick={this.submitHandler}>Save</button>
+            </div>
+
+
+          </div>
+        </Modal>
       </div>
 
     )
