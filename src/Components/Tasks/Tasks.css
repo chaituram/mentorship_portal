@@ -7,7 +7,7 @@
 
 .Tasks {
     padding: 10px 2px 2px 10px;
-    /* border-bottom: 1px solid #cccccc; */
+    border-bottom: 1px solid #cccccc;
     color: black;
     text-align: left;
     cursor: pointer;

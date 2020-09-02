@@ -5,11 +5,11 @@ class Tasks extends Component {
     render() {
         // console.log(this.props);
         let task = (
-            <a
+            <span
                 onClick={this.props.clicked}
                 className="Task"
             >
-                {this.props.taskData.title}</a>
+                {this.props.taskData.title}</span>
         )
         return (
             <article>

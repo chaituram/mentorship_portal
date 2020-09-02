@@ -13,8 +13,8 @@
 }
 
 .TaskTitle {
-    min-width: 60%;
-    max-width: 100%;
+    /* min-width: 60%; */
+    width: 100%;
     border: 1px solid #cccccc;
 }
 

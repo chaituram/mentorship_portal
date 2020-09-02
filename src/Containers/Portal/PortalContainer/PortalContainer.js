@@ -23,7 +23,7 @@ class PortalContainer extends Component {
             mentorship_id: this.props.mentorshipId
         },
         tasksList: [],
-        // selectedTask: {},
+        selectedRow: "",
         error: false
     }
 
@@ -91,7 +91,11 @@ class PortalContainer extends Component {
     }
 
     taskSelectedHandler = (task) => {
-        selectedTask = <Task task={task} />
+        selectedTask = (<div className="TaskDetails p-1">
+            <Task task={task} />
+        </div>
+        );
+        this.setState({ selectedRow: task.id });
     }
 
     render() {
@@ -99,13 +103,13 @@ class PortalContainer extends Component {
         let tasks = <p style={{ textAlign: 'center' }}>Something went wrong!</p>;
         if (!this.state.error) {
             tasks = this.state.tasksList.map(task => {
-                return (<Link
+                return (<Link key={task.id}
                     to={{
                         pathname: "/portal/" + this.props.mentorshipId
                     }}
                 >
                     <Tasks
-                        key={task.id}
+                      
                         taskData={task}
                         clicked={() => this.taskSelectedHandler(task)}
                     />
@@ -167,7 +171,7 @@ class PortalContainer extends Component {
                             />
                            Status: <select
                                 onChange={this.statusHandler}>
-                                <option value="pending" selected>Pending</option>
+                                <option value="pending">Pending</option>
                                 <option value="inprogress">InProgress</option>
                             </select>
                             End Date: <input type="date" onChange={this.endDateHandler} />
@@ -187,9 +191,8 @@ class PortalContainer extends Component {
                     <div className="TaskTitle">
                         {tasks}
                     </div>
-                    <div className="TaskDetails p-1">
-                        {selectedTask}
-                    </div>
+
+                    {selectedTask}
                 </div>
             </div>
         )
