@@ -16,7 +16,7 @@ const user = (props) => {
             pathname: "/user-details/" + props.id
           }}
         >
-          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+          <i className="fa fa-chevron-right" aria-hidden="true"></i>
 
         </Link>
       </td>

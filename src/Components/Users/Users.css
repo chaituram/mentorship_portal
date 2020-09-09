@@ -8,14 +8,8 @@
     border-color: 1px solid #dee2e6;;
 }
 
-.table th, .table td{
-    background: white;
-}
 
 td, a {
     color: #343a40!important;
 }
 
-a:hover {
-    
-}

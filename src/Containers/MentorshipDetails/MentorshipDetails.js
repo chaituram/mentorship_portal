@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import firebase from ".././../Services/FireBase";
 import "./MentorshipDetails.css";
 import { Link } from "react-router-dom";
+import { Redirect } from 'react-router';
+
 
 class MentorshipDetails extends Component {
 
@@ -13,7 +15,8 @@ class MentorshipDetails extends Component {
             status: "active",
             goal: ""
         },
-        saveButtonStatus: false
+        saveButtonStatus: false,
+        redirect: false
     }
 
     componentWillMount() {
@@ -34,6 +37,7 @@ class MentorshipDetails extends Component {
         firebase.db.collection('mentorship').add(this.state.mentorship);
         console.log(this.props);
         // this.props.history.push("/portal/" + this.props.id);
+        this.setState({ redirect: true });
     }
 
     selectMentorHandler = (event) => {
@@ -56,31 +60,40 @@ class MentorshipDetails extends Component {
         this.setState({ mentorship: updatedState });
     }
 
+
     render() {
         // console.log(this.props);
+        if (this.state.redirect) {
+            return <Redirect to={"/portal/" + this.props.id} />
+        }
         let dataToDisplay;
         if (this.props.mentorshipPrograms.length > 0) {
             this.props.mentorshipPrograms.map((program) => {
                 dataToDisplay = (
                     <div>
-                        {/* <p>Data available</p> */}
-                    Mentor:  <select className="mb-3" disabled onChange={this.selectMentorHandler} value={program.mentor_id}>
-                            <option value="null">---select---</option>
-                            {
-                                this.props.completeUsers &&
-                                this.props.completeUsers.map((h, i) =>
-                                    (<option key={i} value={h.id}>{h.firstname}</option>))
-                            }
-                        </select>
-                        <p>
-                            Goal: {program.goal}
-                        </p>
-                        <p>
-                            Status: {program.status}
-                        </p>
-                        <p>
-                            Start date: {program.startDate.toDate().toString()}
-                        </p>
+                        <div className="form-group">
+                            <label for="exampleInputEmail1">Mentor</label>
+                            <select className="form-control" disabled onChange={this.selectMentorHandler} value={program.mentor_id}>
+                                <option value="null">---select---</option>
+                                {
+                                    this.props.completeUsers &&
+                                    this.props.completeUsers.map((h, i) =>
+                                        (<option key={i} value={h.id}>{h.firstname}</option>))
+                                }
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label>  Goal </label>
+                            {/* <label>  {program.goal} </label> */}
+                            <input className="form-control" disabled value={program.goal} />
+                        </div>
+                        <div className="form-group">
+                            <label>  Status </label>
+                            <input className="form-control" disabled value={program.status} />
+                        </div>
+                        <div className="form-group">
+                            <label>  Start date:  {program.startDate.toDate().toString()} </label>
+                        </div>
                         <div>
                             <Link
                                 to={{
@@ -94,28 +107,30 @@ class MentorshipDetails extends Component {
             })
 
         } else {
-
             dataToDisplay = (
                 <div>
-                    <p>No mentorships available</p>
-                    <div className="form-group row">
-                        <label className="col-sm-2 col-form-label">Assign a mentor</label>
-                        <div className="col-sm-10">
-                            <select
-                                onChange={this.selectMentorHandler}>
-                                <option value="null">---select---</option>
-                                {
-                                    this.props.completeUsers &&
-                                    this.props.completeUsers.map((h, i) =>
-                                        (<option key={i} value={h.id}>{h.firstname}</option>))
-                                }
-                            </select>
-                        </div>
+                    <h4 className="alert alert-warning" role="alert">No mentorships available</h4>
+                    <div className="form-group">
+                        <label className=" col-form-label">Assign a mentor</label>
+                        {/* <div className="col-sm-10"> */}
+                        <select
+                            className="form-control"
+                            onChange={this.selectMentorHandler}
+                        >
+                            <option value="null">---select---</option>
+                            {
+                                this.props.completeUsers &&
+                                this.props.completeUsers.map((h, i) =>
+                                    (<option key={i} value={h.id}>{h.firstname}</option>))
+                            }
+                        </select>
+                        {/* </div> */}
                     </div>
                     <div>
                     </div>
-                    <div>
-                        <textarea onChange={this.textAreaHandler}></textarea>
+                    <div className="form-group">
+                        <label>  Goal </label>
+                        <textarea className="form-control" onChange={this.textAreaHandler}></textarea>
                     </div>
                     <div>
                         <Link to={{

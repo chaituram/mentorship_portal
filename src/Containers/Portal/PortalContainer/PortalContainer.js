@@ -24,11 +24,13 @@ class PortalContainer extends Component {
         },
         tasksList: [],
         selectedRow: "",
-        error: false
+        error: false,
+        loadSpinner: false
     }
 
     componentDidMount() {
         this.readingAllTasks();
+        this.setState({ loadSpinner: true });
     }
 
     openModalHandler = () => {
@@ -83,6 +85,7 @@ class PortalContainer extends Component {
                 });
                 // console.log(list);
                 this.setState({ tasksList: list });
+                this.setState({ loadSpinner: false })
             })
             .catch(error => {
                 // console.log(error, '=> reading all tasks');
@@ -91,43 +94,43 @@ class PortalContainer extends Component {
     }
 
     taskSelectedHandler = (task) => {
-        selectedTask = (<div className="TaskDetails p-1">
-            <Task task={task} />
-        </div>
-        );
         this.setState({ selectedRow: task.id });
     }
 
     render() {
         // console.log('1');
         let tasks = <p style={{ textAlign: 'center' }}>Something went wrong!</p>;
+
         if (!this.state.error) {
             tasks = this.state.tasksList.map(task => {
-                return (<Link key={task.id}
-                    to={{
-                        pathname: "/portal/" + this.props.mentorshipId
-                    }}
-                >
-                    <Tasks
-                      
-                        taskData={task}
-                        clicked={() => this.taskSelectedHandler(task)}
-                    />
-                </Link>);
+                return (
+                    <Link key={task.id}
+                        to={{
+                            pathname: "/task/" + task.id
+                        }}
+                    >
+                        <Tasks
+                            // key={task.id}
+                            taskData={task}
+                            clicked={() => this.taskSelectedHandler(task)}
+                        />
+                    </Link>
+                );
             });
         }
         return (
-            <div className="container-wrapper">
-                <PortalHeader />
-                <div className="container-fluid d-flex justify-content-between">
-                    <div>
+            <div className="container-wrapper p-3">
+                <div className="loader" style={{ display: (this.state.loadSpinner ? 'block' : 'none') }}>Loading...</div>
+                {/* <PortalHeader /> */}
+                {/* <div className="container-fluid"> */}
+                {/* <div>
                         <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                        {/* <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> */}
-                    </div>
-                    <div>
-                        <button className="btn btn-primary mb-3" onClick={this.openModalHandler}>Create New Task</button>
-                    </div>
+                        
+                    </div> */}
+                <div className="text-right">
+                    <button className="btn btn-primary mb-3" onClick={this.openModalHandler}>Create New Task</button>
                 </div>
+                {/* </div> */}
                 <Modal
                     show={this.state.isModalOpen}
                     modalClosed={this.modalHandler}
@@ -169,20 +172,36 @@ class PortalContainer extends Component {
                                     // console.log('Focus.', editor);
                                 }}
                             />
-                           Status: <select
+                            <div className="form-group"></div>
+                            <label>Status</label>
+                            <select
+                                className="form-control"
                                 onChange={this.statusHandler}>
                                 <option value="pending">Pending</option>
                                 <option value="inprogress">InProgress</option>
                             </select>
-                            End Date: <input type="date" onChange={this.endDateHandler} />
+                            <div className="form-group">
+                                <label> End Date</label>
+                                <input
+                                    className="form-control"
+                                    type="date"
+                                    onChange={this.endDateHandler}
+                                />
+                            </div>
                         </div>
                         <div className="modal-footer pb-0">
-                            <button className="btn btn-danger"
+                            <button
+                                className="btn btn-danger"
                                 onClick={() => { this.setState({ isModalOpen: false }) }}
-                            >Cancel</button>
-                            <button className="btn btn-success"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn btn-success"
                                 onClick={this.submitHandler}
-                            >Create</button>
+                            >
+                                Create
+                            </button>
                             {/* disabled={!this.state.formValidation} */}
                         </div>
                     </div>
@@ -191,9 +210,9 @@ class PortalContainer extends Component {
                     <div className="TaskTitle">
                         {tasks}
                     </div>
-
-                    {selectedTask}
+                    {/* {selectedTask} */}
                 </div>
+                
             </div>
         )
     }

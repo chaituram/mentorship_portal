@@ -6,7 +6,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './Input.css'
 let inputElement = null;
 const input = (props) => {
-    console.log(props.id, 'propsInput');
+    // console.log(props.id, 'propsInput');
     const inputClasses = ['form-control'];
     if (!props.inputValidated && props.inputTouched) {
         inputClasses.push('inValid');
@@ -72,7 +72,7 @@ const input = (props) => {
                 }}
                 onChange={(event, editor) => {
                     const data = editor.getData();
-                     console.log({ event, editor, data });
+                    //  console.log({ event, editor, data });
                 }}
                 onBlur={(event, editor) => {
                     const data = editor.getData();

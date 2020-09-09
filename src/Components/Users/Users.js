@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
 
 import firebase from "../../Services/FireBase";
-
+import CreateUser from "../UserCreation/CreateUser";
 import User from "./User/User";
 import "./Users.css";
+import * as ReactBootstrap from "react-bootstrap";
 // let eachUser = null;
 class Users extends Component {
     state = {
-        data: []
+        data: [],
+        loadSpinner: false
     };
     getAllUsers() {
         let items = [];
@@ -23,14 +25,18 @@ class Users extends Component {
                     this.setState({ data: items });
                 });
                 // console.log(this.state.data, 'userId');
-            })
+                this.setState({ loadSpinner: false });
+            });
     }
 
     componentDidMount() {
-        this.getAllUsers()
+        this.setState({ loadSpinner: true });
+        this.getAllUsers();
     }
-    getAllUsersListHandler() {
+    getAllUsersListHandler = () => {
         // console.log('user created !');
+        this.setState({ loadSpinner: true });
+        this.getAllUsers();
     }
 
 
@@ -44,9 +50,13 @@ class Users extends Component {
                 email={user.email}
             />
         )
-        return(
+        return (
             <div>
-                <table className="table">
+                {this.state.loadSpinner ? <div className="loader"></div> : ''}
+                <div>
+                    <CreateUser refreshHandler={this.getAllUsersListHandler} />
+                </div>
+                <table className="table table-hover">
                     <thead >
                         <tr>
                             <th scope="col">First</th>

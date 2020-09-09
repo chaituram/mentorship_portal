@@ -15,7 +15,7 @@
 .TaskTitle {
     /* min-width: 60%; */
     width: 100%;
-    border: 1px solid #cccccc;
+    /* border: 1px solid #cccccc; */
 }
 
 .TaskDetails {
@@ -24,3 +24,5 @@
     height: 80vh;
     overflow-y: scroll;
 }
+
+  

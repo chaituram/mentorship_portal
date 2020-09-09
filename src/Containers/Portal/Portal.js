@@ -11,7 +11,6 @@ class Portal extends Component {
     render() {
         return (
             <div className="d-flex flex-row">
-                <Navigation />
                 <PortalContainer mentorshipId={this.props.match.params.id} />
             </div>
         )

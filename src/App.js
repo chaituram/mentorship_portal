@@ -16,7 +16,7 @@ function App() {
         <Route path="/portal/:id" exact component={Portal} />
         <Route path="/user-details/:id" exact component={UserDetails} />
         <Route path="/user-details/:id" component={MentorshipDetails} />
-        <Route path="/portal:id" exact component={Task} />
+        <Route path="/task/:id" exact component={Task} />
       </Switch>
     </div>
   );

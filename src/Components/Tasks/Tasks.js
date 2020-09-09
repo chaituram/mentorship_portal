@@ -13,7 +13,7 @@ class Tasks extends Component {
         )
         return (
             <article>
-                <div className="Tasks ">
+                <div className="alert alert-secondary ">
                     {task}
                 </div>
             </article>
