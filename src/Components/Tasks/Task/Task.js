@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import FireBase from "../../../Services/FireBase";
+// import Comments from "../../Comments/Comments";
+import CreateComment from "../../Comments/CreateComment/CreateComment";
+import { Spinner } from "react-bootstrap";
 import Comments from "../../Comments/Comments";
 
 const formElementsArray = [];
@@ -11,8 +14,17 @@ class Task extends Component {
         super(props);
         this.state = {
             task: [],
-            showCommentSection: false,
-            comment: ''
+            showCreateCommentSection: false,
+            comment: {
+                taskId: '',
+                description: '',
+                createdBy: sessionStorage.getItem('user'),
+                // updatedBy: sessionStorage.getItem('user'),
+                updatedDate: '',
+                createdDate: new Date()
+            },
+            showSpinnerForComment: false,
+            commentsList: []
         }
         // console.log(this.state);
         this.handleChange = this.handleChange.bind(this);
@@ -30,17 +42,38 @@ class Task extends Component {
         // console.log(this.state);
     }
     componentDidMount() {
-        console.log('un mounting', this.props);
+        // console.log('un mounting', this.props);
         const id = this.props.match.params.id;
+     
         FireBase.db.collection('tasks')
             .doc(id)
             .get()
             .then((snapShot) => {
-                console.log(snapShot.data());
+                const updatedTaskId = {
+                    ...this.state.comment
+                }
+                updatedTaskId.taskId = snapShot.id;
+                this.setState({ comment: updatedTaskId })
                 snapShot.data().start_date.toDate().toString();
-                this.setState({ task: snapShot.data() })
+                this.setState({ task: snapShot.data() });
             });
-
+            this.getAllComments();
+    }
+    getAllComments(){
+        let allComments = [];
+        FireBase.db.collection('comments')
+            .where('createdBy', '==', sessionStorage.getItem('user'))
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    // console.log(doc.data());
+                    let record = doc.data();
+                    record['id'] = doc.id;
+                    allComments.push(record);
+                    this.setState({ commentsList: allComments });
+                    // console.log(this.state, 'all comments');
+                })
+            })
     }
 
     savingUpdatedTask = () => {
@@ -57,16 +90,32 @@ class Task extends Component {
         this.props.history.goBack();
     }
     showCommentBoxHandler = () => {
-        this.setState({ showCommentSection: true });
+        this.setState({ showCreateCommentSection: true });
     }
     postCommentHandler = () => {
-        // this.setState({ showCommentSection: false });
-        // firebase.db.collection('comments')
-        // .add()
+        this.setState({ showSpinnerForComment: true });
+        this.setState({ showCreateCommentSection: false });
+        FireBase.db.collection('comments')
+            .add(this.state.comment)
+            .then((res) => {
+                console.log(res);
+                this.setState({ showSpinnerForComment: false });
+                this.getAllComments();
+            },
+                err => {
+                    console.log(err, '=> comment');
+                    this.setState({ showSpinnerForComment: false })
+                }
+            )
     }
     commentHandler = (e) => {
-        this.setState({ comment: e });
-        console.log(e);
+        const updatedCommentState = {
+            ...this.state.comment
+        }
+        updatedCommentState.description = e
+        this.setState({ comment: updatedCommentState });
+        // console.log(e);
+
     }
 
     render() {
@@ -135,27 +184,48 @@ class Task extends Component {
                     </div>
                 </form>
                 <div
-                    style={{ display: (!this.state.showCommentSection ? 'block' : 'none') }}
+                    style={{ display: (!this.state.showCreateCommentSection ? 'block' : 'none') }}
                 >
-                    <button className="btn btn-secondary"
+                    <button className="btn btn-secondary mb-3"
                         onClick={this.showCommentBoxHandler}
                     >
                         Add Comment
                     </button>
                 </div>
+                <div className='text-center'>
+                    <Spinner
+                        style={{ display: (this.state.showSpinnerForComment ? 'block' : 'none') }}
+                        animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </div>
+
                 <div
                     className="p-3"
-                    style={{ display: (this.state.showCommentSection ? 'block' : 'none') }}
+                    style={{ display: (this.state.showCreateCommentSection ? 'block' : 'none') }}
                 >
-                    <Comments
+                    <CreateComment
                         comment={this.commentHandler}
                     />
                     <div className="text-right">
-                        <button className="btn btn-danger mr-3" onClick={() => { this.setState({ showCommentSection: false }) }}>Cancel</button>
-                        <button className="btn btn-info" onClick={this.postCommentHandler}>Post</button>
+                        <button className="btn btn-danger mr-3"
+                            onClick={() => { this.setState({ showCommentSection: false }) }}
+                        >
+                            Cancel
+                        </button>
+                        <button className="btn btn-info"
+                            onClick={this.postCommentHandler}
+                        >
+                            Post
+                        </button>
                     </div>
                 </div>
-
+                <div>
+                    <Comments 
+                        comments={this.state.commentsList}
+                        // update={}
+                    />
+                </div>
             </div>
         )
     }

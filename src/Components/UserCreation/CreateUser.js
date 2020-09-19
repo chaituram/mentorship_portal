@@ -16,7 +16,7 @@ class CreateUser extends Component {
           placeholder: 'User Name',
         },
         value: '',
-        label: 'User Name',
+        label: 'First Name',
         validation: {
           required: true,
           minLength: 3

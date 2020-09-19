@@ -34,6 +34,7 @@ class PortalContainer extends Component {
     }
 
     openModalHandler = () => {
+        debugger
         this.setState({ isModalOpen: true })
     }
     titleHandler = (event) => {
@@ -60,6 +61,7 @@ class PortalContainer extends Component {
     }
 
     submitHandler = () => {
+        debugger
         // console.log(this.props, this.state.task);
         Firebase.db.collection("tasks").add(this.state.task)
             .then((res) => {
@@ -70,7 +72,7 @@ class PortalContainer extends Component {
     }
 
     readingAllTasks() {
-        console.log('refreshing', this.props.mentorshipId);
+        console.log('refreshing', this.props);
         let list = [];
         Firebase.db.collection("tasks").where("mentorship_id", "==", this.props.mentorshipId)
             .get()
@@ -118,19 +120,19 @@ class PortalContainer extends Component {
                 );
             });
         }
+        if (this.state.tasksList.length <= 0) {
+            tasks = (
+                <div className="alert alert-light" role="alert">
+                    No tasks available !
+                </div>
+            )
+        }
         return (
             <div className="container-wrapper p-3">
                 <div className="loader" style={{ display: (this.state.loadSpinner ? 'block' : 'none') }}>Loading...</div>
-                {/* <PortalHeader /> */}
-                {/* <div className="container-fluid"> */}
-                {/* <div>
-                        <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                        
-                    </div> */}
                 <div className="text-right">
                     <button className="btn btn-primary mb-3" onClick={this.openModalHandler}>Create New Task</button>
                 </div>
-                {/* </div> */}
                 <Modal
                     show={this.state.isModalOpen}
                     modalClosed={this.modalHandler}
@@ -210,9 +212,7 @@ class PortalContainer extends Component {
                     <div className="TaskTitle">
                         {tasks}
                     </div>
-                    {/* {selectedTask} */}
                 </div>
-                
             </div>
         )
     }

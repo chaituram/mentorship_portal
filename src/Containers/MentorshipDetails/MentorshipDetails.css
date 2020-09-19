@@ -2,5 +2,22 @@
     width: 80%;
     margin: 10px auto;
     text-align: left;
+}
+
+.card-header{
+    text-align: left!important;
+}
+.title{
+    color: black;
+    text-align: left;
+    margin: 0!important;
+    width: 100%;
+}
+
+.fa-angle-down{
+    color: black;
     
+    /* padding-top: 2px; */
+    padding-right: 10px;
+
 }

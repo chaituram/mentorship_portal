@@ -1,0 +1,12 @@
+ul li {
+    list-style: none;
+    display: inline-block;
+    cursor: pointer;
+
+}
+
+li:hover {
+    text-decoration-line: underline;
+  /* text-decoration-style: wavy; */
+  text-decoration-color: #2f9dec;
+}

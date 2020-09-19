@@ -3,7 +3,9 @@ import firebase from ".././../Services/FireBase";
 import "./MentorshipDetails.css";
 import { Link } from "react-router-dom";
 import { Redirect } from 'react-router';
-
+import MentorShipProgram from "../../Components/MentorShipPrograms/MentorShipProgram";
+import CreateMentorshipProgram from "../../Components/CreateMentorshipProgram/CreateMentorshipProgram";
+import { Accordion, Card, Button } from 'react-bootstrap';
 
 class MentorshipDetails extends Component {
 
@@ -17,6 +19,7 @@ class MentorshipDetails extends Component {
         },
         saveButtonStatus: false,
         redirect: false
+
     }
 
     componentWillMount() {
@@ -26,132 +29,126 @@ class MentorshipDetails extends Component {
             .get().then((snapshot) => {
                 console.log(snapshot.id, 'mentor');
             })
-    }
-
-    componentDidMount() {
-        console.log('component will receive props', this.props);
+        firebase.db.collection('mentorship').where('mentee_id', '==', this.props.id)
+            .get().then((snapshot) => {
+                console.log(snapshot.id, 'mentee');
+            })
     }
 
     saveMentorshipDetailsHandler = (event) => {
-        event.preventDefault();
+        console.log(this.state.mentorship);
         firebase.db.collection('mentorship').add(this.state.mentorship);
-        console.log(this.props);
-        // this.props.history.push("/portal/" + this.props.id);
         this.setState({ redirect: true });
     }
 
     selectMentorHandler = (event) => {
-        event.preventDefault();
-        console.log(event.target.value, this.props.id);
         const updatedState = {
             ...this.state.mentorship
         }
-        updatedState.mentor_id = event.target.value;
+        updatedState.mentor_id = event;
         updatedState.mentee_id = this.props.id;
         this.setState({ mentorship: updatedState });
     }
 
-    textAreaHandler = (event) => {
-        // console.log(event.target.value);
+    textAreaHandler = (e) => {
         const updatedState = {
             ...this.state.mentorship
         }
-        updatedState.goal = event.target.value;
+        updatedState.goal = e;
         this.setState({ mentorship: updatedState });
     }
 
 
     render() {
         // console.log(this.props);
-        if (this.state.redirect) {
-            return <Redirect to={"/portal/" + this.props.id} />
-        }
-        let dataToDisplay;
+        let mentorshipPrograms = null;
+        let menteePrograms = null;
         if (this.props.mentorshipPrograms.length > 0) {
-            this.props.mentorshipPrograms.map((program) => {
-                dataToDisplay = (
-                    <div>
-                        <div className="form-group">
-                            <label for="exampleInputEmail1">Mentor</label>
-                            <select className="form-control" disabled onChange={this.selectMentorHandler} value={program.mentor_id}>
-                                <option value="null">---select---</option>
-                                {
-                                    this.props.completeUsers &&
-                                    this.props.completeUsers.map((h, i) =>
-                                        (<option key={i} value={h.id}>{h.firstname}</option>))
-                                }
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label>  Goal </label>
-                            {/* <label>  {program.goal} </label> */}
-                            <input className="form-control" disabled value={program.goal} />
-                        </div>
-                        <div className="form-group">
-                            <label>  Status </label>
-                            <input className="form-control" disabled value={program.status} />
-                        </div>
-                        <div className="form-group">
-                            <label>  Start date:  {program.startDate.toDate().toString()} </label>
-                        </div>
-                        <div>
-                            <Link
-                                to={{
-                                    pathname: "/portal/" + program.id
-                                }}>
-                                <button className="btn btn-primary">Go to Board</button>
-                            </Link>
-                        </div>
-                    </div>
-                )
-            })
-
+            mentorshipPrograms = (
+                this.props.mentorshipPrograms.map((program) => {
+                    return <MentorShipProgram
+                        key={program.id}
+                        goal={program.goal}
+                        status={program.status}
+                        startDate={program.startDate}
+                        programId={program.id}
+                        allUsers={this.props.completeUsers}
+                        mentor={program.mentor_id}
+                    />
+                })
+            )
         } else {
-            dataToDisplay = (
-                <div>
-                    <h4 className="alert alert-warning" role="alert">No mentorships available</h4>
-                    <div className="form-group">
-                        <label className=" col-form-label">Assign a mentor</label>
-                        {/* <div className="col-sm-10"> */}
-                        <select
-                            className="form-control"
-                            onChange={this.selectMentorHandler}
-                        >
-                            <option value="null">---select---</option>
-                            {
-                                this.props.completeUsers &&
-                                this.props.completeUsers.map((h, i) =>
-                                    (<option key={i} value={h.id}>{h.firstname}</option>))
-                            }
-                        </select>
-                        {/* </div> */}
-                    </div>
-                    <div>
-                    </div>
-                    <div className="form-group">
-                        <label>  Goal </label>
-                        <textarea className="form-control" onChange={this.textAreaHandler}></textarea>
-                    </div>
-                    <div>
-                        <Link to={{
-                            pathname: "/portal/" + this.props.id
-                        }}>
-                            <button className="btn btn-primary" onClick={this.saveMentorshipDetailsHandler}>Save</button>
-                        </Link>
-
-                    </div>
-                </div>
+            mentorshipPrograms = (
+                <CreateMentorshipProgram
+                    allUsers={this.props.completeUsers}
+                    mentorSelection={this.selectMentorHandler}
+                    goalHandler={this.textAreaHandler}
+                    saveProgram={this.saveMentorshipDetailsHandler}
+                    id={this.props.id}
+                />
+            )
+        }
+        if (this.props.menteePrograms != null && this.props.menteePrograms.length > 0) {
+            menteePrograms = (
+                this.props.menteePrograms.map((program) => {
+                    return <MentorShipProgram
+                        key={program.id}
+                        goal={program.goal}
+                        status={program.status}
+                        startDate={program.startDate}
+                        programId={program.id}
+                        allUsers={this.props.completeUsers}
+                        mentor={program.mentor_id}
+                    />
+                })
             )
         }
         return (
-            <div className="card main">
-                <h3 className="card-header">
-                    Mentorship Details
-            </h3>
-                <div className="card-body">
-                    {dataToDisplay}
-                </div>
-            </div>
+            <Accordion defaultActiveKey="0" className="card main p-1" >
+                <Card>
+                    <Card.Header>
+                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                            <div className="d-flex justify-content-start">
+                                <div>
+                                    <span><i className="fa fa-angle-down fa-2x" aria-hidden="true"></i></span>
+                                </div>
+                                <div>
+                                    <h3 className="title">  Mentorship Programs</h3>
+                                </div>
+                            </div>
+                        </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey="0">
+                        <Card.Body>
+                            <div className="card-body p-0">
+                                {mentorshipPrograms}
+                            </div>
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
+                <Card>
+                    <Card.Header>
+                        <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                        <div className="d-flex justify-content-start">
+                                <div>
+                                    <span><i className="fa fa-angle-down fa-2x" aria-hidden="true"></i></span>
+                                </div>
+                                <div>
+                                <h5 className="title">  Mentee Programs </h5>
+                                </div>
+                            </div>
+                            <span></span> 
+                        </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey="1">
+                        <Card.Body>
+                            <div className="card-body p-0">
+                                {menteePrograms}
+                            </div>
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
+            </Accordion>
         )
     }
 }

@@ -1,0 +1,90 @@
+.main {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url(/static/media/signin_page.1819f192.jpeg);
+    width: 100% !important;
+    height: 100%;
+    margin: 0px!important;
+    padding-top: 2%;
+}
+
+.signBlock {
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+    padding: 12px 10px;
+    background-color: #fefefe;
+    margin: 0 auto;
+    /* 5% from the top, 15% from the bottom and centered */
+    /* border: 1px solid #888; */
+    width: 30rem;
+    /* Could be more or less, depending on screen size */
+    text-align: center;
+    -webkit-box-shadow: -2px -2px 5px -1px rgba(204, 188, 204, 1);
+    -moz-box-shadow: -2px -2px 5px -1px rgba(204, 188, 204, 1);
+    box-shadow: -2px -2px 5px -1px rgba(204, 188, 204, 1);
+}
+
+/* Modal Content/Box */
+
+.signUp {
+    font-weight: 400!important;
+}
+
+h2 {
+    font-weight: 900;
+}
+
+.color-orange {
+    color: orange;
+    cursor: pointer;
+}
+
+.login-section {
+    width: 70%;
+    margin: 0 auto;
+    padding-top: 3%;
+}
+
+.btn {
+    width: 100%;
+}
+
+.gmail {
+    background-color: #D44638!important;
+}
+
+.facebook {
+    background-color: #3b5998!important;
+}
+
+/* Extra small devices (phones, 600px and down) */
+
+@media only screen and (max-width: 600px) {
+    .signBlock{
+        width: 18rem;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+
+@media only screen and (min-width: 600px) {
+    .signBlock{
+        width: 18rem;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+
+@media only screen and (min-width: 768px) {
+    .signBlock{
+        width: 30rem;
+    }
+}

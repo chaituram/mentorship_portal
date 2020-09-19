@@ -1,0 +1,18 @@
+.program {
+    border: 1px solid black;
+    border-radius: 4px;
+}
+.table-bordered td, .table-bordered th {
+    border: none!important;
+}
+
+thead {
+    background-color: cornflowerblue;
+    color: white;
+    border-radius: 4px;
+}
+tbody > tr{
+    color: #000000!important;
+    font-weight: 100!important;
+    border-bottom: 1px solid #dee2e6;
+}

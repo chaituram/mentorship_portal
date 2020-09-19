@@ -24,8 +24,19 @@
 .navbar {
     background-color: white!important;
     margin-bottom: 20px;
+    margin: 0px;
 }
 
 .modal-title {
     text-align: left;
+}
+
+.btn-outline-primary {
+    color: orange!important;
+    border: 1px solid orange!important;
+    border-radius: 20px!important;
+}
+.btn-outline-primary:hover {
+   background: white!important;
+   color: orange!important;
 }

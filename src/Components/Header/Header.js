@@ -26,6 +26,9 @@ class Header extends Component {
               </div>
             </a>
           </div>
+          <div className="">
+            <button type="button" className="btn btn-outline-primary">SIGN UP FOR FREE</button>
+          </div>
         </nav>
       </div>
 
